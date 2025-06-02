@@ -1,39 +1,32 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
-import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import type { RootStackParamList } from '../navigation/StackNavigator';
+import React from 'react';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { NavigationContainer } from '@react-navigation/native';
+import { Ionicons } from '@expo/vector-icons';
 
-type Props = {
-  navigation: NativeStackNavigationProp<RootStackParamList, 'Login'>;
-};
+import TareasScreen from './(tabs)/Tareas/TareasScreen';
+import SubtareasScreen from './(tabs)/Tareas/SubtareasScreen';
 
-export default function LoginScreen({ navigation }: Props) {
-  const [user, setUser] = useState('');
-  const [password, setPassword] = useState('');
+const Tab = createBottomTabNavigator();
 
+export default function App() {
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Iniciar Sesión</Text>
-      <TextInput
-        placeholder="Usuario"
-        value={user}
-        onChangeText={setUser}
-        style={styles.input}
-      />
-      <TextInput
-        placeholder="Contraseña"
-        value={password}
-        onChangeText={setPassword}
-        secureTextEntry
-        style={styles.input}
-      />
-      <Button title="Ingresar" onPress={() => navigation.navigate('Dashboard')} />
-    </View>
+    <NavigationContainer>
+      <Tab.Navigator
+        screenOptions={({ route }) => ({
+          headerShown: true,
+          tabBarIcon: ({ color, size }) => {
+            let iconName: keyof typeof Ionicons.glyphMap = 'list';
+
+            if (route.name === 'Tareas') iconName = 'list';
+            else if (route.name === 'Subtareas') iconName = 'checkmark-circle';
+
+            return <Ionicons name={iconName} size={size} color={color} />;
+          },
+        })}
+      >
+        <Tab.Screen name="Tareas" component={TareasScreen} />
+        <Tab.Screen name="Subtareas" component={SubtareasScreen} />
+      </Tab.Navigator>
+    </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  container: { flex: 1, justifyContent: 'center', padding: 20 },
-  title: { fontSize: 22, marginBottom: 15, textAlign: 'center' },
-  input: { borderWidth: 1, padding: 10, marginBottom: 10, borderRadius: 5 },
-});

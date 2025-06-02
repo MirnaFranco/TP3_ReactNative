@@ -5,6 +5,8 @@ import ProfileScreen from '../screens/ProfileScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 import Creative1Screen from '../screens/Creative1Screen';
 import Creative2Screen from '../screens/Creative2Screen';
+import TareasStack from './TareasStack'; 
+
 
 const Tab = createBottomTabNavigator();
 
@@ -16,6 +18,11 @@ export default function TabNavigator() {
       <Tab.Screen name="Ajustes" component={SettingsScreen} />
       <Tab.Screen name="Foto" component={Creative1Screen} />
       <Tab.Screen name="Productos" component={Creative2Screen} />
+      <Tab.Screen 
+        name="Tareas" 
+        component={TareasStack} 
+        options={{ headerShown: false }} //  para evitar doble header
+      />
     </Tab.Navigator>
   );
 }
